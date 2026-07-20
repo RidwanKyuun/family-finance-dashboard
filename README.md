@@ -152,6 +152,5 @@ Terima kasih telah menggunakan **Family Finance Dashboard**. Semoga aplikasi ini
 - **Struktur File** sekarang sesuai dengan folder `keuangan`.
 - **Instalasi** diperbaiki: pindahkan folder `keuangan` ke web server.
 - **Path akses** menjadi `http://localhost/keuangan/index.php`.
-- Bagian `LICENSE` sudah dihilangkan.
 
 Salin konten di atas ke file `README.md` Anda. File ini siap untuk di-commit dan dipush ke repository. 😊
