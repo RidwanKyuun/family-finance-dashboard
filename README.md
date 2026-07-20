@@ -1,7 +1,5 @@
 # family-finance-dashboard
 Manage your household finances with this sleek dashboard. Add income/expense transactions, filter by month, view category-wise comparisons, and export reports to Excel. Built with PHP, MySQL, Bootstrap 5, featuring a modern glassmorphism dark theme.
-Baik, saya akan buatkan **README.md** yang profesional tanpa menggunakan gambar. Semua penjelasan cukup dengan deskripsi teks yang informatif dan terstruktur. Berikut file lengkapnya:
-
 ---
 
 ```markdown
@@ -68,10 +66,13 @@ git clone https://github.com/RidwanKyuun/family-finance-dashboard.git
 cd family-finance-dashboard
 ```
 
-### 2. Pindahkan ke Web Server
-- **XAMPP** → pindahkan folder ke `htdocs/`
-- **Laragon** → pindahkan ke `www/`
+### 2. Pindahkan Folder ke Web Server
+- **XAMPP** → pindahkan **folder `keuangan`** ke dalam `htdocs/`
+- **Laragon** → pindahkan **folder `keuangan`** ke dalam `www/`
 - **LAMP/LNMP** → sesuaikan dengan dokumentasi server Anda
+
+> 📌 **Pastikan**: Folder yang dipindahkan adalah `keuangan`, bukan isi folder-nya.  
+> Sehingga path aksesnya menjadi: `http://localhost/keuangan/index.php`
 
 ### 3. Buat Database
 - Buka **phpMyAdmin** atau klien MySQL favorit Anda.
@@ -79,7 +80,7 @@ cd family-finance-dashboard
 - Jalankan query pembuatan tabel di atas.
 
 ### 4. Konfigurasi Koneksi
-Buka file `db.php` dan sesuaikan parameter berikut:
+Buka file `db.php` di dalam folder `keuangan` dan sesuaikan parameter berikut:
 ```php
 $host = 'localhost';
 $db   = 'keuangan_keluarga';   // nama database Anda
@@ -89,7 +90,7 @@ $pass = '';                    // password MySQL
 
 ### 5. Jalankan Aplikasi
 - Buka browser dan akses:  
-  `http://localhost/family-finance-dashboard/index.php`
+  `http://localhost/keuangan/index.php`
 - Aplikasi siap digunakan.
 
 ---
@@ -99,12 +100,12 @@ $pass = '';                    // password MySQL
 Berikut adalah struktur file utama dalam proyek ini:
 
 ```
-family-finance-dashboard/
-├── index.php          # Halaman utama (dashboard + tab navigasi)
+keuangan/
 ├── add.php            # Proses tambah transaksi
+├── db.php             # Konfigurasi koneksi database
 ├── delete.php         # Proses hapus transaksi
 ├── export_excel.php   # Ekspor laporan ke Excel
-├── db.php             # Konfigurasi koneksi database
+├── index.php          # Halaman utama (dashboard + tab navigasi)
 └── README.md          # Dokumentasi proyek
 ```
 
@@ -136,12 +137,6 @@ Langkah kontribusi:
 
 ---
 
-## 📄 Lisensi
-
-Proyek ini dilisensikan di bawah **MIT License** – lihat file [LICENSE](LICENSE) untuk detail.
-
----
-
 ## 🙏 Ucapan Terima Kasih
 
 Terima kasih telah menggunakan **Family Finance Dashboard**. Semoga aplikasi ini membantu Anda mengelola keuangan keluarga dengan lebih baik dan terencana.
@@ -153,9 +148,10 @@ Terima kasih telah menggunakan **Family Finance Dashboard**. Semoga aplikasi ini
 
 ---
 
-## ✨ Perubahan yang Dilakukan
-- Bagian **📸 Tampilan Aplikasi** diganti dengan **🖥️ Tampilan Aplikasi (Deskripsi Antarmuka)** yang menjelaskan setiap komponen UI secara rinci tanpa gambar.
-- Penjelasan dibuat deskriptif namun tetap profesional, membantu pengguna memahami alur dan fitur aplikasi.
-- Semua bagian lain tetap rapi dan informatif.
+## 🔄 Perubahan yang Saya Lakukan
+- **Struktur File** sekarang sesuai dengan folder `keuangan`.
+- **Instalasi** diperbaiki: pindahkan folder `keuangan` ke web server.
+- **Path akses** menjadi `http://localhost/keuangan/index.php`.
+- Bagian `LICENSE` sudah dihilangkan.
 
-Salin seluruh konten di atas ke file `README.md` Anda, lalu *commit* dan *push*. Repository Anda akan terlihat sangat profesional! 🚀
+Salin konten di atas ke file `README.md` Anda. File ini siap untuk di-commit dan dipush ke repository. 😊
