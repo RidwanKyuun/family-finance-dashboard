@@ -101,12 +101,12 @@ Berikut adalah struktur file utama dalam proyek ini:
 
 ```
 keuangan/
-├── add.php            # Proses tambah transaksi
-├── db.php             # Konfigurasi koneksi database
-├── delete.php         # Proses hapus transaksi
-├── export_excel.php   # Ekspor laporan ke Excel
-├── index.php          # Halaman utama (dashboard + tab navigasi)
-└── README.md          # Dokumentasi proyek
+├── add.php              # Proses tambah transaksi
+├── db.php               # Konfigurasi koneksi database
+├── delete.php           # Proses hapus transaksi
+├── export_excel.php     # Ekspor laporan ke Excel
+├── index.php            # Halaman utama (dashboard + tab navigasi)
+README.md                # Dokumentasi proyek
 ```
 
 ---
