@@ -143,7 +143,7 @@ Terima kasih telah menggunakan **Family Finance Dashboard**. Semoga aplikasi ini
 
 ---
 
-**Dibuat dengan ❤️ oleh [RidwanKyuun](https://github.com/RidwanKyuun)**
+**Dibuat oleh [RidwanKyuun](https://github.com/RidwanKyuun)**
 ```
 
 ---
