@@ -8,6 +8,17 @@ $bulan_akhir = date('Y-m-t', strtotime($bulan_awal));
 
 $tab = isset($_GET['tab']) ? $_GET['tab'] : 'all';
 
+// ===== SALDO TOTAL SEMUA WAKTU (untuk header) =====
+$stmt_total = $pdo->query("
+    SELECT 
+        COALESCE(SUM(CASE WHEN jenis='masuk' THEN jumlah ELSE 0 END),0) AS total_masuk_all,
+        COALESCE(SUM(CASE WHEN jenis='keluar' THEN jumlah ELSE 0 END),0) AS total_keluar_all
+    FROM transaksi
+");
+$total_all = $stmt_total->fetch();
+$saldo_total = $total_all['total_masuk_all'] - $total_all['total_keluar_all'];
+
+// ===== RINGKASAN BULAN TERPILIH (untuk kartu) =====
 $stmt = $pdo->prepare("
     SELECT 
         COALESCE(SUM(CASE WHEN jenis='masuk' THEN jumlah ELSE 0 END),0) AS total_masuk,
@@ -17,8 +28,9 @@ $stmt = $pdo->prepare("
 ");
 $stmt->execute([$bulan_awal, $bulan_akhir]);
 $ringkasan = $stmt->fetch();
-$saldo = $ringkasan['total_masuk'] - $ringkasan['total_keluar'];
+$saldo_bulan = $ringkasan['total_masuk'] - $ringkasan['total_keluar'];
 
+// ===== AMBIL DATA TRANSAKSI BERDASARKAN TAB =====
 if ($tab == 'masuk') {
     $stmt = $pdo->prepare("
         SELECT * FROM transaksi 
@@ -352,7 +364,7 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
             margin-right: 0.5rem;
         }
 
-        /* Tabel - perbaikan kontras teks */
+        /* Tabel */
         .table-wrapper {
             background: rgba(255,255,255,0.02);
             backdrop-filter: blur(8px);
@@ -373,7 +385,7 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
         .table-wrapper .table-header .title {
             font-weight: 600;
             font-size: 1.1rem;
-            color: #fff; /* putih terang */
+            color: #fff;
         }
         .table-wrapper .table-header .badge-count {
             background: rgba(255,255,255,0.06);
@@ -399,13 +411,13 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
         }
         .table-custom {
             margin: 0;
-            color: #fff; /* teks putih untuk seluruh tabel */
+            color: #fff;
             border-collapse: separate;
             border-spacing: 0;
         }
         .table-custom th {
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.9); /* lebih terang */
+            color: rgba(255,255,255,0.9);
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.7rem;
@@ -418,7 +430,7 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
             border-bottom: 1px solid rgba(255,255,255,0.05);
             vertical-align: middle;
             background: transparent;
-            color: #f0f0f0; /* putih bersih */
+            color: #f0f0f0;
         }
         .table-custom tbody tr {
             transition: 0.2s;
@@ -517,14 +529,14 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
     </div>
     <?php endif; ?>
 
-    <!-- Saldo Utama -->
+    <!-- Saldo Utama (TOTAL SEMUA WAKTU) -->
     <div class="main-balance fade-up">
         <div class="glow"></div>
         <div class="d-flex flex-wrap justify-content-between align-items-center">
             <div>
-                <div class="label-saldo"><i class="bi bi-wallet2 me-2"></i>Saldo Keluarga</div>
-                <div class="nominal-saldo">Rp <?= number_format($saldo, 0, ',', '.') ?></div>
-                <div class="periode"><i class="bi bi-calendar3 me-1"></i> Bulan <?= date('F Y', strtotime($bulan_awal)) ?></div>
+                <div class="label-saldo"><i class="bi bi-wallet2 me-2"></i>Saldo Total (Semua Waktu)</div>
+                <div class="nominal-saldo">Rp <?= number_format($saldo_total, 0, ',', '.') ?></div>
+                <div class="periode"><i class="bi bi-calendar3 me-1"></i> Akumulasi seluruh transaksi</div>
             </div>
             <div class="filter-area">
                 <form method="get" class="d-flex align-items-center gap-2 flex-wrap">
@@ -535,27 +547,27 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
         </div>
     </div>
 
-    <!-- Ringkasan 3 Kartu -->
+    <!-- Ringkasan 3 Kartu (PER BULAN) -->
     <div class="row g-3 mb-4">
         <div class="col-md-4 fade-up fade-up-d1">
             <div class="card-summary masuk">
                 <div class="icon-circle"><i class="bi bi-arrow-up-circle"></i></div>
-                <div class="label">Pemasukan</div>
+                <div class="label">Pemasukan Bulan Ini</div>
                 <div class="value">Rp <?= number_format($ringkasan['total_masuk'], 0, ',', '.') ?></div>
             </div>
         </div>
         <div class="col-md-4 fade-up fade-up-d2">
             <div class="card-summary keluar">
                 <div class="icon-circle"><i class="bi bi-arrow-down-circle"></i></div>
-                <div class="label">Pengeluaran</div>
+                <div class="label">Pengeluaran Bulan Ini</div>
                 <div class="value">Rp <?= number_format($ringkasan['total_keluar'], 0, ',', '.') ?></div>
             </div>
         </div>
         <div class="col-md-4 fade-up fade-up-d3">
             <div class="card-summary saldo">
                 <div class="icon-circle"><i class="bi bi-pie-chart"></i></div>
-                <div class="label">Selisih</div>
-                <div class="value">Rp <?= number_format($saldo, 0, ',', '.') ?></div>
+                <div class="label">Selisih Bulan Ini</div>
+                <div class="value">Rp <?= number_format($saldo_bulan, 0, ',', '.') ?></div>
             </div>
         </div>
     </div>
@@ -625,7 +637,7 @@ unset($_SESSION['pesan'], $_SESSION['tipe']);
         <!-- Tabel Selisih Per Kategori -->
         <div class="table-wrapper fade-up fade-up-d4">
             <div class="table-header">
-                <span class="title"><i class="bi bi-bar-chart me-2 text-gold"></i>Perbandingan Pemasukan & Pengeluaran per Kategori</span>
+                <span class="title"><i class="bi bi-bar-chart me-2 text-gold"></i>Perbandingan Pemasukan & Pengeluaran per Kategori (Bulan Ini)</span>
                 <span class="badge-count"><i class="bi bi-database me-1"></i> <?= count($selisih_data) ?> kategori</span>
             </div>
             <div class="table-responsive">
